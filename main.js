@@ -1,20 +1,17 @@
-'use strict'
+'use strict';
 
-// Electron loaded via NPM
-var electron = require('electron');
-var app = electron.app;
-var BrowserWindow = electron.BrowserWindow;
+const electron = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
 
-// Used to keep application main window in JS context so not GC'd
-var mainWindow = null;
+let mainWindow = null;
 
-// Mimic UX of Win/Linux so closing only app window closes app
-app.on('window-all-closed', function(){
-    if(process.platform !== 'darwin') app.quit();
+app.on('window-all-closed',() => {
+  if (process.platform !== 'darwin') app.quit();
 });
 
-app.on('ready', function(){
-    mainWindow = new BrowserWindow();
-    mainWindow.loadURL('file://' + process.cwd() + '/index.html');
-    mainWindow.on('closed', function(){ mainWindow = null; });
+app.on('ready', () => {
+  mainWindow = new BrowserWindow();
+  mainWindow.loadURL(`file://${app.getAppPath()}/index.html`);
+  mainWindow.on('closed', () => { mainWindow = null; });
 });
